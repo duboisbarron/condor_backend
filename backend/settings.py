@@ -25,7 +25,9 @@ SECRET_KEY = '8$l181eu5)aj5ts-kp8a$8d#@d30#7o&#-o=1g4uz97%)01653'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'condor-backend-django.herokuapp.com',
+]
 
 
 # Application definition
@@ -51,7 +53,8 @@ INSTALLED_APPS = [
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8080",
     "http://10.145.14.218:8080",
-    "http://10.145.22.108:8080"
+    "http://10.145.22.108:8080",
+    "https://condor-frontend-vue.herokuapp.com"
 ]
 
 
