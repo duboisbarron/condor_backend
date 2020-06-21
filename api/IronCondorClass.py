@@ -46,8 +46,8 @@ class IronCondor:
     def max_loss(self):
         greatest_diff = float(max(abs(self.diff_call_strikes()), abs(self.diff_put_strikes())))
 
-        print(round((greatest_diff - self.initial_credit()) * 100.00, 2))
-        return round((greatest_diff - self.initial_credit()) * 100.00, 2)
+        # print(round((greatest_diff - self.initial_credit()) * 100.00, 2))
+        return round((self.initial_credit() - greatest_diff) * 100.00, 2)
 
     def risk_reward_ratio(self):
         return self.max_gain() / abs(self.max_loss())
@@ -77,7 +77,8 @@ class IronCondor:
 
 if __name__ == '__main__':
 
-    condor = IronCondor(13.0, 5.79, 10.79, 15.79, 20.79, 0.1, 0.5, 0.2, 0.1)
+    condor = IronCondor(52, 45, 50, 55, 60, 0.78, 2.21, 2.32, 1.01)
+
 
 
     print(str(condor))
@@ -86,7 +87,7 @@ if __name__ == '__main__':
 
     print(condor.initial_credit())
 
-    print(condor.max_loss())
+    print('max loss is: ' + str(condor.max_loss()))
 
     print(condor.risk_reward_ratio())
 
