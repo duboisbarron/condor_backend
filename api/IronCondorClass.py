@@ -71,7 +71,7 @@ class IronCondor:
             'short_call_premium': self.sc_prem,
             'buy_call_premium': self.bc_prem,
             'max_gain': self.max_gain(),
-            'max_loss': self.max_loss(),
+            'max_loss': abs(self.max_loss()),
             'risk_reward': round(self.risk_reward_ratio(), 2)
         }
 
