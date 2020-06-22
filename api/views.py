@@ -53,7 +53,7 @@ class FindCondors(RetrieveAPIView):
         serialized_data = []
         for index, condor in enumerate(condors):
             try:
-                serialized_data.append(condor.serialize(id))
+                serialized_data.append(condor.serialize(index))
             except Exception as e:
                 print(e)
                 print(condor)
