@@ -58,9 +58,10 @@ class IronCondor:
     def right_side_break_even(self):
         return self.short_put - self.initial_credit()
 
-    def serialize(self):
+    def serialize(self, id):
 
         return {
+            'id': id,
             'buy_put': self.buy_put,
             'short_put': self.short_put,
             'current_share_price': round(self.current_share_price, 2),
