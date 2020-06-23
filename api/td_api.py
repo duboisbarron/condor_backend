@@ -1,6 +1,6 @@
 import requests
 import time
-from .IronCondorClass import IronCondor
+from IronCondorClass import IronCondor
 
 
 class TD_API:
@@ -161,12 +161,13 @@ class TD_API:
                         bc_prem=call_leg['buy_call_premium'],
                         bp_BA=put_leg['buy_put_BA'],
                         sp_BA=put_leg['write_put_BA'],
-                        sc_BA=put_leg['write_call_BA'],
-                        bc_BA=put_leg['buy_call_BA']
+                        sc_BA=call_leg['write_call_BA'],
+                        bc_BA=call_leg['buy_call_BA']
                     )
                     valid_condors.append(condor)
                 except Exception as e:
-                    print(e)
+                    # print(e)
+                    # print('error occurred')
                     # print('this configuration invalid')
                     put_index += 1
                     total_iterations += 1
@@ -218,4 +219,6 @@ if __name__ == '__main__':
     td_api = TD_API()
     expiration_date = td_api.get_current_price_and_expirations('JNJ')['expiration_dates'][1]
     print(expiration_date)
-    td_api.get_condors('JNJ', expiration_date)
+    condors = td_api.get_condors('JNJ', expiration_date)
+    condor1 = condors[0]
+    print(condor1.serialize(5))
