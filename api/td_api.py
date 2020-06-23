@@ -5,7 +5,7 @@ import os
 
 
 class TD_API:
-    user_id = os.environ('td_key')
+    user_id = os.environ['td_key']
     url = 'https://api.tdameritrade.com/v1/marketdata/chains'
 
 
