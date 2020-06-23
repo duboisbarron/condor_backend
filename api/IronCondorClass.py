@@ -80,10 +80,10 @@ class IronCondor:
             'max_gain': self.max_gain(),
             'max_loss': abs(self.max_loss()),
             'risk_reward': round(self.risk_reward_ratio(), 2),
-            'buy_put_BA': self.bp_BA,
-            'short_put_BA': self.sp_BA,
-            'short_call_BA': self.sc_BA,
-            'buy_call_BA': self.bc_BA
+            'buy_put_BA': round(self.bp_BA, 2),
+            'short_put_BA': round(self.sp_BA, 2),
+            'short_call_BA': round(self.sc_BA, 2),
+            'buy_call_BA': round(self.bc_BA, 2)
         }
 
 if __name__ == '__main__':
