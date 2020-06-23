@@ -53,11 +53,18 @@ class TD_API:
             mark_price_buy_put = data[buy_put_strike_price][0]['mark']
             mark_price_write_put = data[write_put_strike_price][0]['mark']
 
+            bid_ask_str_WRITE = str(data[write_put_strike_price][0]['bid']) + '-' + str(data[write_put_strike_price][0]['ask'])
+            bid_ask_str_BUY = str(data[buy_put_strike_price][0]['bid']) + '-' + str(data[buy_put_strike_price][0]['ask'])
+
+
+
             put_leg = {
                 'buy_put': float(buy_put_strike_price),
                 'write_put': float(write_put_strike_price),
                 'buy_put_premium': float(mark_price_buy_put),
-                'write_put_premium': float(mark_price_write_put)
+                'write_put_premium': float(mark_price_write_put),
+                'buy_put_BA': bid_ask_str_BUY,
+                'write_put_BA': bid_ask_str_WRITE
             }
 
             put_legs.append(put_leg)
@@ -99,13 +106,18 @@ class TD_API:
             mark_price_write_call = data[write_call_strike_price][0]['mark']
             mark_price_buy_call = data[buy_call_strike_price][0]['mark']
 
+            bid_ask_str_WRITE = str(data[write_call_strike_price][0]['bid']) + '-' + str(data[write_call_strike_price][0]['ask'])
+            bid_ask_str_BUY = str(data[buy_call_strike_price][0]['bid']) + '-' + str(data[buy_call_strike_price][0]['ask'])
+
             # print(mark_price_write_call, mark_price_buy_call)
 
             call_leg = {
                 'write_call': float(write_call_strike_price),
                 'buy_call': float(buy_call_strike_price),
                 'write_call_premium': float(mark_price_write_call),
-                'buy_call_premium': float(mark_price_buy_call)
+                'buy_call_premium': float(mark_price_buy_call),
+                'buy_call_BA': bid_ask_str_BUY,
+                'write_call_BA': bid_ask_str_WRITE
             }
             # print(call_leg['write_call'], call_leg['buy_call'])
             # print(call_leg['write_call_premium'], call_leg['buy_call_premium'])
@@ -146,7 +158,11 @@ class TD_API:
                         bp_prem=put_leg['buy_put_premium'],
                         sp_prem=put_leg['write_put_premium'],
                         sc_prem=call_leg['write_call_premium'],
-                        bc_prem=call_leg['buy_call_premium']
+                        bc_prem=call_leg['buy_call_premium'],
+                        bp_BA=put_leg['buy_put_BA'],
+                        sp_BA=put_leg['write_put_BA'],
+                        sc_BA=put_leg['write_call_BA'],
+                        bc_BA=put_leg['buy_call_BA']
                     )
                     valid_condors.append(condor)
                 except Exception as e:

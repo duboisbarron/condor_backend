@@ -2,7 +2,8 @@
 class IronCondor:
 
 
-    def __init__(self, current_share_price, buy_put, short_put, short_call, buy_call, bp_prem, sp_prem, sc_prem, bc_prem, contract_size=100.0):
+    def __init__(self, current_share_price, buy_put, short_put, short_call, buy_call, bp_prem, sp_prem, sc_prem, bc_prem,
+                 bp_BA, sp_BA, sc_BA, bc_BA, contract_size=100.0):
 
         assert buy_put < short_put < short_call < buy_call
 
@@ -20,6 +21,11 @@ class IronCondor:
         self.sp_prem = sp_prem
         self.sc_prem = sc_prem
         self.bc_prem = bc_prem
+
+        self.bp_BA = bp_BA
+        self.sp_BA = sp_BA
+        self.sc_BA = sc_BA
+        self.bc_BA = bc_BA
 
         self.contract_size = contract_size
 
@@ -73,12 +79,16 @@ class IronCondor:
             'buy_call_premium': self.bc_prem,
             'max_gain': self.max_gain(),
             'max_loss': abs(self.max_loss()),
-            'risk_reward': round(self.risk_reward_ratio(), 2)
+            'risk_reward': round(self.risk_reward_ratio(), 2),
+            'buy_put_BA': self.bp_BA,
+            'short_put_BA': self.sp_BA,
+            'short_call_BA': self.sc_BA,
+            'buy_call_BA': self.bc_BA
         }
 
 if __name__ == '__main__':
 
-    condor = IronCondor(52, 45, 50, 55, 60, 0.78, 2.21, 2.32, 1.01)
+    condor = IronCondor(52, 45, 50, 55, 60, 0.78, 2.21, 2.32, 1.01, '0.65-0.80', '2.1-2.3', '2.15-2.45', '0.9-1.10')
 
 
 
@@ -92,5 +102,5 @@ if __name__ == '__main__':
 
     print(condor.risk_reward_ratio())
 
-    print(condor.serialize())
+    print(condor.serialize(5))
 
