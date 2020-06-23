@@ -53,10 +53,8 @@ class TD_API:
             mark_price_buy_put = data[buy_put_strike_price][0]['mark']
             mark_price_write_put = data[write_put_strike_price][0]['mark']
 
-            bid_ask_str_WRITE = str(data[write_put_strike_price][0]['bid']) + '-' + str(data[write_put_strike_price][0]['ask'])
-            bid_ask_str_BUY = str(data[buy_put_strike_price][0]['bid']) + '-' + str(data[buy_put_strike_price][0]['ask'])
-
-
+            bid_ask_str_WRITE = abs(data[write_put_strike_price][0]['bid'] - data[write_put_strike_price][0]['ask'])
+            bid_ask_str_BUY = abs(data[buy_put_strike_price][0]['bid'] - data[buy_put_strike_price][0]['ask'])
 
             put_leg = {
                 'buy_put': float(buy_put_strike_price),
@@ -106,8 +104,8 @@ class TD_API:
             mark_price_write_call = data[write_call_strike_price][0]['mark']
             mark_price_buy_call = data[buy_call_strike_price][0]['mark']
 
-            bid_ask_str_WRITE = str(data[write_call_strike_price][0]['bid']) + '-' + str(data[write_call_strike_price][0]['ask'])
-            bid_ask_str_BUY = str(data[buy_call_strike_price][0]['bid']) + '-' + str(data[buy_call_strike_price][0]['ask'])
+            bid_ask_str_WRITE = abs(data[write_call_strike_price][0]['bid'] - data[write_call_strike_price][0]['ask'])
+            bid_ask_str_BUY = abs(data[buy_call_strike_price][0]['bid'] - data[buy_call_strike_price][0]['ask'])
 
             # print(mark_price_write_call, mark_price_buy_call)
 
