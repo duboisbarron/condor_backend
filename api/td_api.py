@@ -1,6 +1,6 @@
 import requests
 import time
-from IronCondorClass import IronCondor
+from .IronCondorClass import IronCondor
 
 
 class TD_API:
