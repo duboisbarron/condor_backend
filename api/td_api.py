@@ -166,7 +166,7 @@ class TD_API:
                     )
                     valid_condors.append(condor)
                 except Exception as e:
-                    # print(e)
+                    print(e)
                     # print('this configuration invalid')
                     put_index += 1
                     total_iterations += 1
