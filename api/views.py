@@ -22,14 +22,11 @@ class OptionDataView(RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
 
-        print(args)
-        print(kwargs)
         ticker = kwargs['ticker']
 
         td_obj = TD_API()
 
         data = td_obj.get_current_price_and_expirations(ticker)
-        print(data)
 
         return Response(data=data)
 
@@ -44,7 +41,6 @@ class FindCondors(RetrieveAPIView):
 
 
         condors = td_obj.get_condors(ticker, expiration)
-        print('found {} valid iron condor configurations'.format(len(condors)))
 
         # condor1 = IronCondor(6, 7, 15, 20, 0.01, 0.5, 0.3, 0.1)
         # condor2 = IronCondor(4, 5, 30, 40, 0.1, 0.5, 0.2, 0.1)
@@ -55,8 +51,8 @@ class FindCondors(RetrieveAPIView):
             try:
                 serialized_data.append(condor.serialize(index))
             except Exception as e:
-                print(e)
-                print(condor)
+                # print(e)
+                # print(condor)
                 continue
 
 

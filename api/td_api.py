@@ -1,10 +1,11 @@
 import requests
 import time
 from .IronCondorClass import IronCondor
+import os
 
 
 class TD_API:
-    user_id = 'BAA5TMIP4SRHGPJNOULQFURLDHZYQLJ6'
+    user_id = os.environ('td_key')
     url = 'https://api.tdameritrade.com/v1/marketdata/chains'
 
 
@@ -91,7 +92,7 @@ class TD_API:
         strike_prices = list(data.keys())
         num_strikes = len(strike_prices)
 
-        print(num_strikes)
+        # print(num_strikes)
         # want write_call strike price to be < buy_call strike price
         write_call_index = 0
         buy_call_index = 1
@@ -133,7 +134,7 @@ class TD_API:
         valid_condors = []
 
 
-        print(len(put_legs), len(call_legs))
+        # print(len(put_legs), len(call_legs))
         total_iterations = 0
         call_index = 0
         while call_index < len(call_legs):
