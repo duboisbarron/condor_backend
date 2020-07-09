@@ -1,13 +1,14 @@
 import requests
 import time
 from .IronCondorClass import IronCondor
+from .CallCreditClass import CallCredit
 import os
 
 
 class TD_API:
-    user_id = os.environ['td_key']
+    # user_id = os.environ['td_key']
+    user_id = 'BAA5TMIP4SRHGPJNOULQFURLDHZYQLJ6'
     url = 'https://api.tdameritrade.com/v1/marketdata/chains'
-
 
     def get_current_price_and_expirations(self, ticker):
         params = {
@@ -180,8 +181,6 @@ class TD_API:
         # end while
         return valid_condors
 
-
-
     def get_condors(self, ticker, expiration):
         params = {
             'apikey': self.user_id,
@@ -212,12 +211,79 @@ class TD_API:
 
 
 
-#
-#
+    def get_call_credit_spreads(self, ticker, expiration):
+        params = {
+            'apikey': self.user_id,
+            'symbol': ticker,
+            'contractType': 'ALL'
+        }
+        response = requests.get(url=self.url, params=params)
+        data = response.json()
+
+        current_share_price = float(data['underlyingPrice'])
+        print(current_share_price)
+
+        call_data = data['callExpDateMap']
+        set_of_call_contracts = call_data[expiration]
+
+        # print(set_of_call_contracts)
+        good_keys = []
+        for strike in set_of_call_contracts.keys():
+            if float(strike) > current_share_price:
+                good_keys.append(strike)
+
+
+        print('current share price is: {}'.format(current_share_price))
+        print(good_keys)
+
+        valid_call_credit_spreads = []
+
+        for index, short_strike in enumerate(good_keys):
+            potential_long_strikes = good_keys[index + 1 ::]
+            # print(short_strike)
+            # print(potential_long_strikes)
+
+            for long_strike in potential_long_strikes:
+
+
+                try:
+
+
+                    short_strike_premium = set_of_call_contracts[short_strike][0]['mark']
+                    # print(set_of_call_contracts[short_strike])
+                    # print(short_strike_premium)
+
+                    long_strike_premium = set_of_call_contracts[long_strike][0]['mark']
+
+                    bid_ask_str_WRITE = abs(set_of_call_contracts[short_strike][0]['bid'] - set_of_call_contracts[short_strike][0]['ask'])
+                    bid_ask_str_BUY = abs(set_of_call_contracts[long_strike][0]['bid'] - set_of_call_contracts[long_strike][0]['ask'])
+
+
+                    # print(short_strike_premium, long_strike_premium, bid_ask_str_WRITE, bid_ask_str_BUY)
+
+                    callcreditObj = CallCredit(
+                        current_share_price,
+                        float(short_strike),
+                        float(long_strike),
+                        short_strike_premium,
+                        long_strike_premium,
+                        bid_ask_str_WRITE,
+                        bid_ask_str_BUY
+                    )
+
+                    valid_call_credit_spreads.append(callcreditObj)
+
+
+                except Exception as e:
+                    # print(e)
+                    # print('ERROR OCCURED')
+                    continue
+        return valid_call_credit_spreads
+
+
 if __name__ == '__main__':
     td_api = TD_API()
     expiration_date = td_api.get_current_price_and_expirations('JNJ')['expiration_dates'][1]
-    print(expiration_date)
-    condors = td_api.get_condors('JNJ', expiration_date)
-    condor1 = condors[0]
-    print(condor1.serialize(5))
+
+
+    td_api.get_call_credit_spreads('AAPL', expiration_date)

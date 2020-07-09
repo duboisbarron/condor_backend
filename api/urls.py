@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from django.urls import path
-from .views import HelloWorldView, OptionDataView, FindCondors
+from .views import HelloWorldView, OptionDataView, FindCondors, FindCallCredit
 
 
 urlpatterns = [
@@ -10,5 +10,10 @@ urlpatterns = [
     path('get_option_data/<str:ticker>/', OptionDataView.as_view()),
 
     path('condors/', FindCondors.as_view()),
+
+
+    path('callcredit/', FindCallCredit.as_view()),
+
+
 
 ]

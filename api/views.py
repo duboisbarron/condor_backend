@@ -3,14 +3,33 @@ from rest_framework.response import Response
 from .td_api import TD_API
 from rest_framework.generics import RetrieveAPIView
 from .IronCondorClass import IronCondor
+from .CallCreditClass import CallCredit
 # Create your views here.
 
+class FindCallCredit(RetrieveAPIView):
+    def get(self, request, *args, **kwargs):
+
+        ticker = request.query_params['ticker']
+        expiration = request.query_params['expiration']
+
+        td_obj = TD_API()
+
+        call_credit_spreads = td_obj.get_call_credit_spreads(ticker, expiration)
+
+        serialized_data = []
+        for index, spread in enumerate(call_credit_spreads):
+            try:
+                serialized_data.append(spread.serialize(index))
+            except Exception as e:
+                continue
 
 
 class HelloWorldView(RetrieveAPIView):
 
 
     def get(self, request, *args, **kwargs):
+
+
 
         return Response({
             'message': 'hello world!'
@@ -42,9 +61,6 @@ class FindCondors(RetrieveAPIView):
 
         condors = td_obj.get_condors(ticker, expiration)
 
-        # condor1 = IronCondor(6, 7, 15, 20, 0.01, 0.5, 0.3, 0.1)
-        # condor2 = IronCondor(4, 5, 30, 40, 0.1, 0.5, 0.2, 0.1)
-        # condor_list = [condor1, condor2]
 
         serialized_data = []
         for index, condor in enumerate(condors):
