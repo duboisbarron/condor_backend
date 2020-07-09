@@ -18,13 +18,13 @@ class CallCredit:
         self.bc_BA = bc_BA
 
     def get_max_gain(self):
-        return 100.0 * (self.short_call_prem - self.long_call_prem)
+        return round(100.0 * (self.short_call_prem - self.long_call_prem), 2)
 
     def get_max_loss(self):
-        return 100.0 * (self.long_call_strike - self.short_call_strike)
+        return round(self.get_max_gain() - (100.0 * (self.long_call_strike - self.short_call_strike)), 2)
 
     def get_risk_reward(self):
-        return self.get_max_gain() / self.get_max_loss()
+        return round(self.get_max_gain() / self.get_max_loss(), 2)
 
     def serialize(self, id):
         return {
