@@ -17,10 +17,10 @@ class CallDebit:
         self.bc_BA = bc_BA
 
     def get_max_gain(self):
-        return round(self.get_max_gain() - (100.0 * (self.long_call_strike - self.short_call_strike)), 2)
+        return round( (100.0 * (self.short_call_strike - self.long_call_strike) - self.get_max_loss()), 2)
 
     def get_max_loss(self):
-        return round(100.0 * (self.short_call_prem - self.long_call_prem), 2)
+        return round(100.0 * (self.long_call_prem - self.short_call_prem), 2)
 
     def get_risk_reward(self):
         return round(self.get_max_gain() / abs(self.get_max_loss()), 2)

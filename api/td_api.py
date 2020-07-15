@@ -7,7 +7,8 @@ import os
 
 
 class TD_API:
-    user_id = os.environ['td_key']
+    # user_id = os.environ['td_key']
+    user_id = 'BAA5TMIP4SRHGPJNOULQFURLDHZYQLJ6'
     url = 'https://api.tdameritrade.com/v1/marketdata/chains'
 
     def get_current_price_and_expirations(self, ticker):
@@ -341,10 +342,13 @@ class TD_API:
 
 if __name__ == '__main__':
     td_api = TD_API()
-    expiration_date = td_api.get_current_price_and_expirations('AAPL')['expiration_dates'][1]
+    expiration_date = td_api.get_current_price_and_expirations('AAPL')['expiration_dates'][3]
 
 
-    td_api.get_call_debit_spreads('AAPL', expiration_date)
+    debit_spreads = td_api.get_call_debit_spreads('AAPL', expiration_date)
+    print(debit_spreads)
+    for index, spread in enumerate(debit_spreads):
+        print(spread.serialize(index))
 
 
 
