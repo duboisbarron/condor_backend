@@ -7,8 +7,7 @@ import os
 
 
 class TD_API:
-    # user_id = os.environ['td_key']
-    user_id = 'BAA5TMIP4SRHGPJNOULQFURLDHZYQLJ6'
+    user_id = os.environ['td_key']
     url = 'https://api.tdameritrade.com/v1/marketdata/chains'
 
     def get_current_price_and_expirations(self, ticker):
