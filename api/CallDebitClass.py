@@ -36,6 +36,6 @@ class CallDebit:
             'max_gain': self.get_max_gain(),
             'max_loss': self.get_max_loss(),
             'risk_reward': self.get_risk_reward(),
-            'buy_call_BA': self.bc_BA,
-            'short_call_BA': self.sc_BA
+            'buy_call_BA': round(self.bc_BA, 2),
+            'short_call_BA': round(self.sc_BA, 2)
         }
