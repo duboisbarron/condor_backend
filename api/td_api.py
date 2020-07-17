@@ -3,12 +3,12 @@ import time
 from .IronCondorClass import IronCondor
 from .CallCreditClass import CallCredit
 from .CallDebitClass import CallDebit
+from .PutDebitClass import PutDebit
 import os
 
 
 class TD_API:
-    # user_id = os.environ['td_key']
-    user_id = 'BAA5TMIP4SRHGPJNOULQFURLDHZYQLJ6'
+    user_id = os.environ['td_key']
     url = 'https://api.tdameritrade.com/v1/marketdata/chains'
 
     def get_current_price_and_expirations(self, ticker):
@@ -340,14 +340,82 @@ class TD_API:
 
         return valid_call_debit_spreads
 
+
+    def get_put_debit_spreads(self, ticker, expiration):
+        params = {
+            'apikey': self.user_id,
+            'symbol': ticker,
+            'contractType': 'ALL'
+        }
+        response = requests.get(url=self.url, params=params)
+        data = response.json()
+
+        current_share_price = float(data['underlyingPrice'])
+        print(current_share_price)
+
+        put_data = data['putExpDateMap']
+        # set_of_call_contracts = call_data[expiration]
+
+        # print(put_data)
+
+        set_of_put_contracts = put_data[expiration]
+
+        # print(set_of_call_contracts)
+        # print(set_of_put_contracts.keys())
+        good_keys = []
+        for strike in set_of_put_contracts.keys():
+            if float(strike) < current_share_price:
+                good_keys.append(strike)
+        good_keys.reverse()
+
+        valid_put_debit_spreads = []
+
+        for index, long_strike in enumerate(good_keys):
+            potential_short_strikes = good_keys[index + 1::]
+
+            for short_strike in potential_short_strikes:
+
+                try:
+
+                    short_strike_premium = set_of_put_contracts[short_strike][0]['mark']
+
+                    long_strike_premium = set_of_put_contracts[long_strike][0]['mark']
+
+                    bid_ask_str_WRITE = abs(set_of_put_contracts[short_strike][0]['bid'] - set_of_put_contracts[short_strike][0]['ask'])
+                    bid_ask_str_BUY = abs(set_of_put_contracts[long_strike][0]['bid'] - set_of_put_contracts[long_strike][0]['ask'])
+
+                    # print(short_strike_premium, long_strike_premium, bid_ask_str_WRITE, bid_ask_str_BUY)
+
+                    calldebitObj = PutDebit(
+                        current_share_price,
+                        float(short_strike),
+                        float(long_strike),
+                        short_strike_premium,
+                        long_strike_premium,
+                        bid_ask_str_WRITE,
+                        bid_ask_str_BUY
+                    )
+
+                    valid_put_debit_spreads.append(calldebitObj)
+
+
+                except Exception as e:
+                    # print(e)
+                    # print('ERROR OCCURED')
+                    continue
+
+
+        print(len(valid_put_debit_spreads))
+        return valid_put_debit_spreads
+
+
+
 if __name__ == '__main__':
     td_api = TD_API()
     expiration_date = td_api.get_current_price_and_expirations('AAPL')['expiration_dates'][3]
-
-
-    debit_spreads = td_api.get_call_debit_spreads('AAPL', expiration_date)
-    print(debit_spreads)
-    for index, spread in enumerate(debit_spreads):
+    put_debit_spreads = td_api.get_put_debit_spreads('AAPL', expiration_date)
+    print(put_debit_spreads)
+    for index, spread in enumerate(put_debit_spreads):
         print(spread.serialize(index))
 
 
