@@ -21,7 +21,7 @@ urlpatterns = [
 
     path('putdebit/', FindPutDebit.as_view()),
 
-    path('putcredit/', FindCallCredit.as_view())
+    path('putcredit/', FindPutCredit.as_view())
 
 
 
