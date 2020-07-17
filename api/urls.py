@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from django.urls import path
-from .views import HelloWorldView, OptionDataView, FindCondors, FindCallCredit, FindCallDebit
+from .views import HelloWorldView, OptionDataView, FindCondors, FindCallCredit, FindCallDebit, FindPutDebit
 
 
 urlpatterns = [
@@ -16,6 +16,9 @@ urlpatterns = [
 
 
     path('calldebit/', FindCallDebit.as_view()),
+
+
+    path('putdebit/', FindPutDebit.as_view()),
 
 
 
