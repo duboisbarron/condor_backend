@@ -1,16 +1,15 @@
 import requests
 import time
-from IronCondorClass import IronCondor
-from CallCreditClass import CallCredit
-from CallDebitClass import CallDebit
-from PutDebitClass import PutDebit
-from PutCreditClass import PutCredit
+from .IronCondorClass import IronCondor
+from .CallCreditClass import CallCredit
+from .CallDebitClass import CallDebit
+from .PutDebitClass import PutDebit
+from .PutCreditClass import PutCredit
 import os
 
 
 class TD_API:
-    # user_id = os.environ['td_key']
-    user_id = 'BAA5TMIP4SRHGPJNOULQFURLDHZYQLJ6'
+    user_id = os.environ['td_key']
     url = 'https://api.tdameritrade.com/v1/marketdata/chains'
 
     def get_current_price_and_expirations(self, ticker):
